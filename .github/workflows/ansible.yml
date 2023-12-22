@@ -1,29 +1,70 @@
-name: Ansible Deployment
+# name: Ansible Deployment
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       Run:
+#         description: 'Ansible-github'
+#         required: true  # Change to your default branch name if different
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Set up Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.x'  # Change to your Python version if different
+
+#     - name: Install Ansible
+#       run: |
+#         pip install ansible
+
+#     - name: Deploy with Ansible
+#       run: |
+#         ansible-playbook -i inventory.ini playbook.yml
+
+
+
+name: Install Nginx
+ 
 on:
   workflow_dispatch:
-    inputs:
-      Run:
-        description: 'Ansible-github'
-        required: true  # Change to your default branch name if different
-
+ 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
-
+  install_nginx:
+    runs-on: ubuntu-latest
+ 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'  # Change to your Python version if different
-
-    - name: Install Ansible
-      run: |
-        pip install ansible
-
-    - name: Deploy with Ansible
-      run: |
-        ansible-playbook -i inventory.ini playbook.yml
+      - name: Checkout repository
+        uses: actions/checkout@v2
+ 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+ 
+      - name: Update apt Package and Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install ansible
+          # python -m pip install --upgrade pip
+          # pip install ansible
+ 
+      # - name: Set up Private SSH key
+      #   run: |
+      #     mkdir -p /home/runner/.ssh
+      #     echo "${{ secrets.PRIVATE_SSH_KEY }}" > /home/runner/.ssh/id_rsa
+      #     chmod 400 /home/runner/.ssh/id_rsa
+ 
+      # - name: Ping Node
+      #   run: |
+      #     ansible -i "3.110.187.195" -u ubuntu --private-key=/home/runner/.ssh/id_rsa -m ping
+ 
+      # - name: Run Ansible playbook
+      #   run: |
+      #     ansible-playbook -i inventory.ini nginx-install.yml
