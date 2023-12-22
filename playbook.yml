@@ -1,0 +1,9 @@
+---
+ - name: Copy SSH Key to Managed Nodes
+   hosts: all # Use the appropriate group or hostname from your inventory file
+   become: yes # Run tasks with elevated privileges (sudo) 
+   tasks:
+     - name: Copy SSH Key 
+       authorized_key: 
+          user: "{{ ansible_user }}" # Use the current Ansible user
+          key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}" # Specify the path to your SSH public key file

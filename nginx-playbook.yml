@@ -1,0 +1,20 @@
+---
+ - name: Installing nginx
+   hosts: all # Use the appropriate group or hostname from your inventory file
+   become: yes # Run tasks with elevated privileges (sudo)
+    
+   tasks:
+   - name: Run Nginx package
+     ansible.builtin.apt:
+       update_cache: yes
+
+   - name: Install Nginx package
+     apt:
+      name: nginx
+      state: present
+
+   - name: Start Nginx service
+     service:
+      name: nginx
+      state: started
+      enabled: yes       
