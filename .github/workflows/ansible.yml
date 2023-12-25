@@ -106,7 +106,7 @@ jobs:
         
         
       # - name: Add EC2 Host Key
-      #   run: ssh-keyscan -H -t rsa 13.127.204.111 >> ~/.ssh/known_hosts
+      #   run: ssh-keyscan -H -t rsa 13.201.121.161 >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
         run: |
