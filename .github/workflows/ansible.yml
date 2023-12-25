@@ -102,7 +102,7 @@ jobs:
         run: |
           mkdir -p /home/runner/.ssh/
           echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/id_rsa
-          chmod 400 /home/runner/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa
         
         
       # - name: Add EC2 Host Key
