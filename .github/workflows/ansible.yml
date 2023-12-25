@@ -1,3 +1,52 @@
+name: Install Nginx
+
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+ 
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+ 
+    - name: Install Ansible
+      run: |
+        pip install ansible
+      continue-on-error: true
+ 
+    - name: Set up SSH Key
+      run: |
+        mkdir -p /home/runner/.ssh/
+        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/id_rsa
+        chmod 600 /home/runner/.ssh/id_rsa
+      shell: bash
+ 
+    - name: Run Ansible playbook
+      run: |
+        ansible-playbook -i inventory.ini --private-key=/home/runner/.ssh/id_rsa -u ubuntu -b nginx-playbook.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: false
+
+
+
+
+
+
+
+
+
+
+
+
 # name: Deploy Nginx on EC2
 
 # on:
@@ -57,44 +106,6 @@
 
 
 
-
-name: Install Nginx
- 
-on:
-  push:
-    branches:
-      - main
- 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
- 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
- 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
- 
-    - name: Install Ansible
-      run: |
-        pip install ansible
-      continue-on-error: true
- 
-    - name: Set up SSH Key
-      run: |
-        mkdir -p /home/runner/.ssh/
-        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/id_rsa
-        chmod 600 /home/runner/.ssh/id_rsa
-      shell: bash
- 
-    - name: Run Ansible playbook
-      run: |
-        ansible-playbook -i inventory.ini --private-key=/home/runner/.ssh/id_rsa -u ubuntu -b nginx-playbook.yml
-      env:
-        ANSIBLE_HOST_KEY_CHECKING: false
 
 
 
