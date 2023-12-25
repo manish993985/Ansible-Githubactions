@@ -30,28 +30,28 @@
 
 
 
-name: Install Nginx
+# name: Install Nginx
  
-on:
-  workflow_dispatch:
+# on:
+#   workflow_dispatch:
  
-jobs:
-  install_nginx:
-    runs-on: ubuntu-latest
+# jobs:
+#   install_nginx:
+#     runs-on: ubuntu-latest
  
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
  
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.x'
  
-      - name: Update apt Package and Install Ansible
-        run: |
-          sudo apt update
-          sudo apt install ansible
+#       - name: Update apt Package and Install Ansible
+#         run: |
+#           sudo apt update
+#           sudo apt install ansible
           # python -m pip install --upgrade pip
           # pip install ansible
  
@@ -68,3 +68,46 @@ jobs:
       # - name: Run Ansible playbook
       #   run: |
       #     ansible-playbook -i inventory.ini nginx-install.yml
+
+
+
+
+
+name: Install nginx on EC2
+on:
+  workflow_dispatch:
+jobs:
+  Install-nginx:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install pip
+        run: python -m ensurepip --default-pip
+
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip
+          sudo pip3 install ansible
+        
+      - name: Set up SSH Key
+        run: |
+          mkdir -p /home/runner/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /home/runner/.ssh/id_rsa
+          chmod 400 /home/runner/.ssh/id_rsa
+        
+        
+      # - name: Add EC2 Host Key
+      #   run: ssh-keyscan -H -t rsa 13.127.204.111 >> ~/.ssh/known_hosts
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i inventory.ini --private-key=/home/runner/.ssh/id_rsa --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'" nginxinstall.yml
