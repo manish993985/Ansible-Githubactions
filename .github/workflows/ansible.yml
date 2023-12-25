@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       Run it:
-        description: 'Wanna run'
+        description: Installing Nginx On EC2
         required: true
         
 jobs:
@@ -54,32 +54,44 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           ansible-playbook -i inventory.ini --private-key=/home/runner/.ssh/id_rsa -u ubuntu -b nginx-playbook.yml
-# name: Ansible Deployment
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# name: Ansible Deployment
 # on:
 #   workflow_dispatch:
 #     inputs:
 #       Run:
 #         description: 'Ansible-github'
 #         required: true  # Change to your default branch name if different
-
 # jobs:
 #   deploy:
 #     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
-
 #     steps:
 #     - name: Checkout code
 #       uses: actions/checkout@v2
-
 #     - name: Set up Python
 #       uses: actions/setup-python@v2
 #       with:
 #         python-version: '3.x'  # Change to your Python version if different
-
 #     - name: Install Ansible
 #       run: |
 #         pip install ansible
-
 #     - name: Deploy with Ansible
 #       run: |
 #         ansible-playbook -i inventory.ini playbook.yml
@@ -87,28 +99,23 @@ jobs:
 
 
 # name: Install Nginx
- 
 # on:
 #   workflow_dispatch:
- 
 # jobs:
 #   install_nginx:
 #     runs-on: ubuntu-latest
- 
 #     steps:
 #       - name: Checkout repository
 #         uses: actions/checkout@v2
- 
 #       - name: Set up Python
 #         uses: actions/setup-python@v2
 #         with:
 #           python-version: '3.x'
- 
 #       - name: Update apt Package and Install Ansible
 #         run: |
 #           sudo apt update
 #           sudo apt install ansible
-          # python -m pip install --upgrade pip
+         # python -m pip install --upgrade pip
           # pip install ansible
  
       # - name: Set up Private SSH key
